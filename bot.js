@@ -6,8 +6,6 @@ const path = require('path');
 const client = new Client({
   intents: [
     IntentsBitField.Flags.Guilds,
-    IntentsBitField.Flags.GuildMessages,
-    IntentsBitField.Flags.MessageContent,
   ],
 });
 
@@ -15,12 +13,12 @@ const client = new Client({
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
-client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+client.once('clientReady', (readyClient) => {
+  console.log(`Logged in as ${readyClient.user.tag}!`);
 });
 
 client.on('interactionCreate', async interaction => {
-  if (!interaction.isCommand()) return;
+  if (!interaction.isChatInputCommand()) return;
 
   const { commandName } = interaction;
 
