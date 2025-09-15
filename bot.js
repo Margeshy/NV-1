@@ -2,6 +2,7 @@ require('dotenv').config();
 const { Client, IntentsBitField } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
+const express = require('express');
 
 const client = new Client({
   intents: [
@@ -34,6 +35,17 @@ client.on('interactionCreate', async interaction => {
       }
     }
   }
+});
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+  res.send('Bot is alive!');
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
 
 client.login(process.env.DISCORD_TOKEN);
