@@ -2,8 +2,9 @@
   "name": "nv-1",
   "version": "1.0.0",
   "description": "A Discord bot to fetch and display Roblox data using slash commands.",
-  "main": "index.js",
+  "main": "bot.js",
   "scripts": {
+    "start": "node bot.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
