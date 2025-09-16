@@ -1,19 +1,11 @@
-# Roblox Discord Bot
+# NV-1
 
-A Discord bot to fetch and display Roblox data using slash commands.
-
-## Setup
-
-1. Clone the repository.
-2. Install dependencies: `npm install`.
-3. Create a `.env` file with your `DISCORD_TOKEN` and `ROBLOX_API_KEY`.
-4. Run the bot: `node bot.js`.
+In use by NicheVille, solely developed by Mistral AI (99% of the work going to AI, 1% going to Margeshy)
 
 ## Commands
 
-- `/user info <username|id>`: Fetch user info.
-- `/game info <placeId|universeId>`: Fetch game info.
-... (include other commands and usage examples)
+- `/user <username|id>`: Fetch user info.
+Other commands will be made, NV-1 is in progress...
 
 ## Configuration
 
