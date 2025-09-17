@@ -53,6 +53,7 @@ module.exports = {
                 );
             }
             const userId = userInfo.id;
+
             // 2) Thumbnail (headshot)
             let profileImageUrl = null;
             try {
@@ -73,6 +74,7 @@ module.exports = {
                         : String(thumbErr),
                 );
             }
+
             // 3) Games / Places (v2 then v1 fallback)
             let places = [];
             try {
@@ -154,6 +156,7 @@ module.exports = {
                     );
                 }
             }
+
             // ----------------------------------------------------------------
             // BADGES SECTION (updated)
             // - fetches latest badges with limit=10 (API requires minimum 10)
@@ -230,6 +233,7 @@ module.exports = {
                 );
                 badges = [];
             }
+
             // Utility to chunk lines into multiple fields so each field.value <= maxLen
             function chunkLinesToFields(
                 titleBase,
@@ -265,7 +269,8 @@ module.exports = {
                 }
                 return fields;
             }
-            // Build the profile field as before
+
+            // Build the profile field
             const profileField = {
                 name: "Profile",
                 value: [
@@ -275,6 +280,16 @@ module.exports = {
                 ].join(" | "),
                 inline: false,
             };
+
+            // Add description field
+            const description =
+                userInfo.description || "No description available.";
+            const descriptionField = {
+                name: "Description",
+                value: description,
+                inline: false,
+            };
+
             // Places lines
             const placeLines = places.map((p) => {
                 const displayName =
@@ -286,6 +301,7 @@ module.exports = {
                 return `**[${displayName}](${rootLink})**${placeIdPart}`;
             });
             const placeFields = chunkLinesToFields("Places", placeLines, 1024);
+
             // Badges lines
             const badgeLines = badges.map((b) => {
                 const namePart = b.id
@@ -301,6 +317,7 @@ module.exports = {
                 badgeLines,
                 1024,
             );
+
             // Links field
             const linksField = {
                 name: "Links",
@@ -311,6 +328,7 @@ module.exports = {
                 ].join(" | "),
                 inline: false,
             };
+
             // Build fields with total-char tracking
             const fields = [];
             let totalChars = 0;
@@ -326,18 +344,26 @@ module.exports = {
                 totalChars += fieldCount;
                 return true;
             };
+
             // Add profile
             addFieldSafely(profileField);
+
+            // Add description
+            addFieldSafely(descriptionField);
+
             // Add places fields until limit
             for (const pf of placeFields) {
                 if (!addFieldSafely(pf)) break;
             }
+
             // Add badges fields until limit
             for (const bf of badgeFields) {
                 if (!addFieldSafely(bf)) break;
             }
+
             // Add links
             addFieldSafely(linksField);
+
             // Warn if exceeded or near limit
             if (totalChars > 6000) {
                 fields.push({
@@ -346,6 +372,7 @@ module.exports = {
                     inline: false,
                 });
             }
+
             // Build embed
             const embed = {
                 color: 0x0099ff,
@@ -358,6 +385,7 @@ module.exports = {
                 footer: { text: "Data from Roblox public web APIs" },
                 timestamp: new Date().toISOString(),
             };
+
             // Reply with embed
             await interaction.editReply({ embeds: [embed] });
         } catch (err) {
